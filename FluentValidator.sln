@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentValidator", "FluentValidator\FluentValidator.csproj", "{EBF116E5-D29A-4081-9A6A-4105EDEBD7D3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentValidator.Tests", "FluentValidator.Tests\FluentValidator.Tests.csproj", "{44AC8B19-B931-4F00-A4D7-50ED95AFC4D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C07E5149-20D8-451B-BBCC-D9AB798856C3}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Readme.md = Readme.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EBF116E5-D29A-4081-9A6A-4105EDEBD7D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBF116E5-D29A-4081-9A6A-4105EDEBD7D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBF116E5-D29A-4081-9A6A-4105EDEBD7D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBF116E5-D29A-4081-9A6A-4105EDEBD7D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44AC8B19-B931-4F00-A4D7-50ED95AFC4D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44AC8B19-B931-4F00-A4D7-50ED95AFC4D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44AC8B19-B931-4F00-A4D7-50ED95AFC4D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44AC8B19-B931-4F00-A4D7-50ED95AFC4D5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {387D4A8C-AB4E-41E8-B25D-424311C0EC09}
+	EndGlobalSection
+EndGlobal
