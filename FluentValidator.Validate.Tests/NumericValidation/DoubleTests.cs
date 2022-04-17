@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentValidator.Validate;
 
 namespace FluentValidator.Tests.NumericValidation;
 

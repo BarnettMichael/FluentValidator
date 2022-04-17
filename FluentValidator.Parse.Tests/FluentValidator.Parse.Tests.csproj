@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FluentValidator\FluentValidator.csproj" />
+    <ProjectReference Include="..\FluentValidator.Parse\FluentValidator.Parse.csproj" />
   </ItemGroup>
 
 </Project>
