@@ -1,5 +1,5 @@
 # ReadMe - FluentValidations
-
+[![CI](https://github.com/BarnettMichael/FluentValidator/actions/workflows/ci.yml/badge.svg)](https://github.com/BarnettMichael/FluentValidator/actions/workflows/ci.yml)
 ## Intro
 A library for wrapping a fluent syntax around user defined validation rules.
 
