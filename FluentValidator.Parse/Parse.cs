@@ -2,5 +2,5 @@
 
 public static class Parse<TEntity>
 {
-    public static ParseSeed<TEntity> This(TEntity value) => new ParseSeed<TEntity>(value);
+    public static Seed<TEntity> This(TEntity value) => new Seed<TEntity>(value);
 }

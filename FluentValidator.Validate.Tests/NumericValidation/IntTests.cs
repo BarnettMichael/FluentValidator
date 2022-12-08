@@ -1,11 +1,12 @@
 ﻿using System;
 using FluentValidator.Validate;
+using NSubstitute;
 
 namespace FluentValidator.Tests.NumericValidation;
 
 /// <summary>
-/// Tests the enumerate examples using the simple <see cref="Check{T}"/> class.
-/// Which return a simple <see cref="Result{T}"/> where there is no advanced Error reporting.
+/// Unit tests that provide examples and code samples of the usage of the simple <see cref="Check{T}"/> class.
+/// While return a simple <see cref="Result{T}"/> where there is no advanced Error reporting.
 /// </summary>
 [TestFixture]
 internal class IntTests
@@ -15,9 +16,8 @@ internal class IntTests
     {
         // Arrange
         var num = 1;
-        Func<int, bool> isPositive = (i) => i > 0;
         // Act
-        bool result = Check.That(num).Is(isPositive);
+        bool result = Check.That(num).Is(i => i > 0);
         // Assert
         result.ShouldBeTrue();
     }
@@ -27,15 +27,14 @@ internal class IntTests
     {
         // Arrange
         var num = -1;
-        Func<int, bool> isPositive = (i) => i > 0;
         // Act
-        bool result = Check.That(num).Is(isPositive);
+        bool result = Check.That(num).Is(i => i > 0);
         // Assert
         result.ShouldBeFalse();
     }
 
     [Test]
-    public void WhenGivenAnInt_ShouldBeAbleToPassMultiplePredicatesAndObtainTheResultOfAllOfThem_OneShouldFail()
+    public void WhenGivenAnInt_ShouldBeAbleToPassMultipleFunctions__IfOneFails_ThenReturnFalse()
     {
         // Arrange
         var num = 1;
@@ -50,7 +49,31 @@ internal class IntTests
     }
 
     [Test]
-    public void WhenGivenAnInt_ShouldBeAbleToPassMultiplePredicatesAndObtainTheResultOfAllOfThem_AllShouldPass()
+    public void WhenGivenAnInt_ShouldBeAbleToPassMultipleFunctionsOneOfWhichFails_NoChecksAfterFailureShouldBeRun()
+    {
+        // Arrange
+        var num = 1;
+        Func<int, bool> passingStub = Substitute.For<Func<int, bool>>();
+        passingStub(Arg.Any<int>()).Returns(true);
+
+        Func<int, bool> isZero = i => i == 0;
+
+        Func<int, bool> mockFunction = Substitute.For<Func<int, bool>>();
+        mockFunction(Arg.Any<int>()).Returns(true);
+        // Act
+        bool result = Check.That(num)
+            .Is(passingStub)
+            .And(isZero)
+            .And(mockFunction);
+        // Assert
+        result.ShouldSatisfyAllConditions(
+            () => result.ShouldBeFalse(),
+            () => passingStub.Received(1).Invoke(Arg.Any<int>()),
+            () => mockFunction.DidNotReceive().Invoke(Arg.Any<int>()));
+    }
+
+    [Test]
+    public void WhenGivenAnInt_ShouldBeAbleToPassMultipleFunctionsAndObtainTheResultOfAllOfThem_AllShouldPass()
     {
         // Arrange
         var num = 100;
@@ -78,6 +101,26 @@ internal class IntTests
 
         // Act
         bool result = Check.That(num).IsAll(checksArray);
+
+        // Assert
+        result.ShouldBeTrue();
+    }
+
+    [Test]
+    public void WhenGivenAnArrayOfChecks_OneHardCoded_ShouldCheckAllOfThem()
+    {
+        // Arrange
+        var num = 100;
+        Func<int, bool> isPositive = i => i > 0;
+        Func<int, bool> IsDivisibleByTen = i => i % 10 == 0;
+        Func<int, bool> isEven = i => i % 2 == 0;
+        Func<int, bool> isLessThanAThousand = i => i < 1000;
+
+
+        // Act
+        bool result = Check.That(num)
+            .Is(isPositive)
+            .AndAll(IsDivisibleByTen, isEven, isLessThanAThousand);
 
         // Assert
         result.ShouldBeTrue();
