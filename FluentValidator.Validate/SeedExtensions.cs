@@ -17,27 +17,28 @@ public static class SeedExtensions
     /// <param name="predicate"></param>
     /// <param name="error"></param>
     /// <returns></returns>
-    public static Result<TEntity> Is<TEntity>(this Seed<TEntity> s, Func<TEntity, bool> predicate, string error = "") => new(s.Value, predicate(s.Value), error);
+    public static Result<TEntity> Is<TEntity>(this Seed<TEntity> s, Func<TEntity, bool> predicate, string error = "") 
+        => new(s.Value, predicate(s.Value), error);
 
     // TODO write tests around this and see if it can actually work as a way of accepting more parameters.
     // Look at https://stackoverflow.com/questions/22834120/func-with-unknown-number-of-parameters to see if that is helpful.
     // Is it better to use Delegate.DynamicInvoke instead?
     // Or better to do worked examples of currying to avoid needing this method in the first place.
     // Don't forget to replicate for other error cases as well 
-    public static Result<TEntity> Is<TEntity, TParam>(this Seed<TEntity> s, Func<TEntity, TParam, bool> predicate, string error = "", params object[] parameters)
-    {
-        if (parameters.Length != 1)
-        {
-            throw new ArgumentException($"Predicate function is expecting two parameters including {typeof(TEntity)}, incorrect number of parameters provided");
-        }
-        var param = (TParam)parameters.Single();
-        return new(s.Value, predicate(s.Value, param), error);
-    }
+    //public static Result<TEntity> Is<TEntity, TParam>(this Seed<TEntity> s, Func<TEntity, TParam, bool> predicate, string error = "", params object[] parameters)
+    //{
+    //    if (parameters.Length != 1)
+    //    {
+    //        throw new ArgumentException($"Predicate function is expecting two parameters including {typeof(TEntity)}, incorrect number of parameters provided");
+    //    }
+    //    var param = (TParam)parameters.Single();
+    //    return new(s.Value, predicate(s.Value, param), error);
+    //}
 
     /// <summary>
     /// Pass the value into a function provided, will return a result based on whether that function returns true or false.
     /// If the function returns true then the result will include the value that can then be chained for further validation.
-    /// The value stored in the error property will be the default of the TError
+    /// The value stored in the error property will be the default value for the type of TError
     /// If the function returns false then the result IsSuccess property will be false and the Error property will be set
     /// to the error value that is passed as a parameter.
     /// </summary>
@@ -64,7 +65,8 @@ public static class SeedExtensions
 
     /// <summary>
     /// Pass the value into a function provided, will return a result based on whether that function returns true or false.
-    /// If the function returns true then the result will include the value that can then be chained for further validation.
+    /// If the function returns true then the result will include the value that can then be chained for further validation and
+    /// the value stored in the error property will be the default value for the type of TError
     /// If the function returns false then the result IsSuccess property will be false and the errorGenerator function will be
     /// called to generate a custom error which is stored in the Result.Error property.
     /// </summary>
@@ -74,14 +76,9 @@ public static class SeedExtensions
     /// <param name="predicate"></param>
     /// <param name="errorGenerator"></param>
     /// <returns></returns>
-    public static Result<TEntity, TError> Is<TEntity, TError>(this Seed<TEntity> s, Func<TEntity, bool> predicate, Func<TEntity, TError> errorGenerator)
-    {
-        if (predicate(s.Value))
-        {
-            return new(s.Value, IsSuccess: true, Error: default);
-        }
-        return new(s.Value, IsSuccess: false, errorGenerator(s.Value));
-    }
+    public static Result<TEntity, TError> Is<TEntity, TError>(this Seed<TEntity> s, Func<TEntity, bool> predicate, Func<TEntity, TError> errorGenerator) 
+        => predicate(s.Value) ? (new(s.Value, IsSuccess: true, Error: default))
+                              : (new(s.Value, IsSuccess: false, errorGenerator(s.Value)));
 
     /// <summary>
     /// Pass the value into each check function in turn, only continuing if all of the previous checks have returned true.
@@ -107,6 +104,16 @@ public static class SeedExtensions
         return currentResult;
     }
 
+    /// <summary>
+    /// Passes the value being validated into each of the predicate checks in turn. The first one to fail will end the validation chain.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the value being validated</typeparam>
+    /// <typeparam name="TError">Type of the error result returned by the validation</typeparam>
+    /// <param name="s">Seed that contains the value being validated</param>
+    /// <param name="checks">An array of tuples, the first item of the tuple being a function to validate the value, 
+    /// and the second item being the error to return if the validation fails.</param>
+    /// <returns>A result object that declares whether or not all of the checks were successful.
+    /// </returns>
     public static Result<TEntity, TError> IsAll<TEntity, TError>(this Seed<TEntity> s, params (Func<TEntity, bool> predicate, TError error)[] checks)
     {
         if (checks.Length == 0) { return new(s.Value, true, default); }
@@ -132,6 +139,16 @@ public static class SeedExtensions
         return currentResult;
     }
 
+    /// <summary>
+    /// Passes the value being validated into each of the predicate checks in turn. The first one to fail will end the validation chain.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the value being validated</typeparam>
+    /// <typeparam name="TError">Type of the error result returned by the validation</typeparam>
+    /// <param name="s">Seed that contains the value being validated</param>
+    /// <param name="checks">An array of tuples, the first item of the tuple being a function to validate the value, 
+    /// and the second item being a function that takes the value as a parameter and returns the error for the whole function to return if the validation fails.</param>
+    /// <returns>A result object that declares whether or not all of the checks were successful.
+    /// </returns>
     public static Result<TEntity, TError> IsAll<TEntity, TError>(this Seed<TEntity> s, params (Func<TEntity, bool> predicate, Func<TEntity, TError> errorGenerator)[] checks)
     {
         if (checks.Length == 0) { return new(s.Value, true, default); }
