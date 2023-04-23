@@ -11,4 +11,22 @@ internal class CheckTests
         Should.Throw<ArgumentNullException>(() => Check.That<User>(value: null));
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
     }
+
+    [Test]
+    public void WhenGivenAnObject_ShouldReturnASeed()
+    {
+        var seed = Check.That(new User { Id = 1, UserName = "TestUserName" });
+
+        seed.ShouldSatisfyAllConditions(
+            () => seed.ShouldNotBeNull(),
+            () => seed.Value.ShouldBeOfType<User>()
+            );
+
+        var user = seed.Value;
+        user.ShouldSatisfyAllConditions(
+            () => user.ShouldNotBeNull(),
+            () => user.Id.ShouldBe(1),
+            () => user.UserName.ShouldBe("TestUserName")
+            );
+    }
 }
