@@ -38,8 +38,8 @@ internal class IntTests
     {
         // Arrange
         var num = 1;
-        Func<int, bool> isPositive = i => i > 0;
-        Func<int, bool> isZero = i => i == 0;
+        static bool isPositive(int i) => i > 0;
+        static bool isZero(int i) => i == 0;
         // Act
         bool result = Check.That(num)
             .Is(isPositive)
@@ -56,7 +56,7 @@ internal class IntTests
         Func<int, bool> passingStub = Substitute.For<Func<int, bool>>();
         passingStub(Arg.Any<int>()).Returns(true);
 
-        Func<int, bool> isZero = i => i == 0;
+        static bool isZero(int i) => i == 0;
 
         Func<int, bool> mockFunction = Substitute.For<Func<int, bool>>();
         mockFunction(Arg.Any<int>()).Returns(true);
@@ -77,8 +77,8 @@ internal class IntTests
     {
         // Arrange
         var num = 100;
-        Func<int, bool> isPositive = i => i > 0;
-        Func<int, bool> isGreaterThanFifty = i => i > 50;
+        static bool isPositive(int i) => i > 0;
+        static bool isGreaterThanFifty(int i) => i > 50;
         // Act
         bool result = Check.That(num)
             .Is(isPositive)
@@ -92,10 +92,10 @@ internal class IntTests
     {
         // Arrange
         var num = 100;
-        Func<int, bool> isPositive = i => i > 0;
-        Func<int, bool> IsDivisibleByTen = i => i % 10 == 0;
-        Func<int, bool> isEven = i => i % 2 == 0;
-        Func<int, bool> isLessThanAThousand = i => i < 1000;
+        static bool isPositive(int i) => i > 0;
+        static bool IsDivisibleByTen(int i) => i % 10 == 0;
+        static bool isEven(int i) => i % 2 == 0;
+        static bool isLessThanAThousand(int i) => i < 1000;
 
         Func<int, bool>[] checksArray = new[] { isPositive, IsDivisibleByTen, isEven, isLessThanAThousand };
 
@@ -111,10 +111,10 @@ internal class IntTests
     {
         // Arrange
         var num = 100;
-        Func<int, bool> isPositive = i => i > 0;
-        Func<int, bool> IsDivisibleByTen = i => i % 10 == 0;
-        Func<int, bool> isEven = i => i % 2 == 0;
-        Func<int, bool> isLessThanAThousand = i => i < 1000;
+        static bool isPositive(int i) => i > 0;
+        static bool IsDivisibleByTen(int i) => i % 10 == 0;
+        static bool isEven(int i) => i % 2 == 0;
+        static bool isLessThanAThousand(int i) => i < 1000;
 
 
         // Act

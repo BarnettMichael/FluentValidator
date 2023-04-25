@@ -11,14 +11,14 @@ namespace FluentValidator.Tests.NumericValidation;
 [TestFixture]
 internal class DoubleTests
 {
-    class ErrorString
+    private class ErrorString
     {
         [Test]
         public void WhenGivenADouble_ShouldBeAbleToPassAFunctionToValidateAPropertyOfTheDoubleAsFalse()
         {
             // Arrange
             var num = -1d;
-            Func<double, bool> isPositive = (d) => d > 0;
+            static bool isPositive(double d) => d > 0;
             // Act
             var result = Check.That(num).Is(isPositive, "The value is not positive.");
             // Assert
@@ -33,9 +33,9 @@ internal class DoubleTests
         {
             // Arrange
             var num = 1d;
-            Func<double, bool> isPositive = d => d > 0;
-            Func<double, bool> IsOdd = d => d % 2 == 1;
-            Func<double, bool> isZero = d => d == 0;
+            static bool isPositive(double d) => d > 0;
+            static bool IsOdd(double d) => d % 2 == 1;
+            static bool isZero(double d) => d == 0;
 
             string isNotOddError = "The value is not odd";
             string isNotZeroError = "The value is not zero.";
@@ -101,7 +101,7 @@ internal class DoubleTests
         }
     }
 
-    class ErrorGenerator
+    private class ErrorGenerator
     {
 
         [Test]
@@ -109,8 +109,8 @@ internal class DoubleTests
         {
             // Arrange
             var num = -1d;
-            Func<double, bool> isPositive = (d) => d > 0;
-            Func<double, string> errorGenerator = (d) => $"The value: {d} failed validation.";
+            static bool isPositive(double d) => d > 0;
+            static string errorGenerator(double d) => $"The value: {d} failed validation.";
             // Act
             var result = Check.That(num).Is(isPositive, errorGenerator);
             // Assert
@@ -125,10 +125,10 @@ internal class DoubleTests
         {
             // Arrange
             var num = 1d;
-            Func<double, bool> isPositive = d => d > 0;
-            Func<double, string> isNotPositiveError = (d) => $"Validation failed: {d} is not positive.";
-            Func<double, bool> isZero = d => d == 0;
-            Func<double, string> isNotZeroError = (d) => $"Validation failed: {d} is not zero.";
+            static bool isPositive(double d) => d > 0;
+            static string isNotPositiveError(double d) => $"Validation failed: {d} is not positive.";
+            static bool isZero(double d) => d == 0;
+            static string isNotZeroError(double d) => $"Validation failed: {d} is not zero.";
 
             // Act
             var result = Check.That(num)
@@ -147,13 +147,13 @@ internal class DoubleTests
         {
             // Arrange
             var num = 1d;
-            Func<double, bool> isPositive = d => d > 0;
-            Func<double, bool> IsOdd = d => d % 2 == 1;
-            Func<double, bool> isZero = d => d == 0;
+            static bool isPositive(double d) => d > 0;
+            static bool IsOdd(double d) => d % 2 == 1;
+            static bool isZero(double d) => d == 0;
 
-            Func<double, string> isNotPositiveErrorGenerator = d => $"The value:{d} is not positive.";
-            Func<double, string> isNotOddErrorGenerator = d => $"The value:{d} is not odd";
-            Func<double, string> isNotZeroErrorGenerator = d => $"The value:{d} is not zero.";
+            static string isNotPositiveErrorGenerator(double d) => $"The value:{d} is not positive.";
+            static string isNotOddErrorGenerator(double d) => $"The value:{d} is not odd";
+            static string isNotZeroErrorGenerator(double d) => $"The value:{d} is not zero.";
 
             // Act
             var result = Check.That(num)
@@ -172,10 +172,10 @@ internal class DoubleTests
         {
             // Arrange
             var num = 998d;
-            Func<double, bool> isPositive = d => d > 0;
-            Func<double, bool> isEven = d => d % 2 == 0;
-            Func<double, bool> IsDivisibleByTen = d => d % 10 == 0;
-            Func<double, bool> isLessThanAThousand = d => d < 1000;
+            static bool isPositive(double d) => d > 0;
+            static bool isEven(double d) => d % 2 == 0;
+            static bool IsDivisibleByTen(double d) => d % 10 == 0;
+            static bool isLessThanAThousand(double d) => d < 1000;
 
             (Func<double, bool> check, Func<double, string> errorGenerator)[] checksArray =
                 new (Func<double, bool>, Func<double,string>)[] {
@@ -196,14 +196,14 @@ internal class DoubleTests
         }
     }
 
-    class DeclaredError
+    private class DeclaredError
     {
         [Test]
         public void WhenGivenADouble_ShouldBeAbleToPassAFunctionToValidateAPropertyOfTheDoubleAsFalse()
         {
             // Arrange
             var num = -1d;
-            Func<double, bool> isPositive = (d) => d > 0;
+            static bool isPositive(double d) => d > 0;
             // Act
             var result = Check.That(num).Is(isPositive, ErrorType.NotPositive);
             // Assert
@@ -218,8 +218,8 @@ internal class DoubleTests
         {
             // Arrange
             var num = 1d;
-            Func<double, bool> isPositive = d => d > 0;
-            Func<double, bool> isZero = d => d == 0;
+            static bool isPositive(double d) => d > 0;
+            static bool isZero(double d) => d == 0;
 
             // Act
             var result = Check.That(num)
@@ -238,9 +238,9 @@ internal class DoubleTests
         {
             // Arrange
             var num = 1d;
-            Func<double, bool> isPositive = d => d > 0;
-            Func<double, bool> IsOdd = d => d % 2 == 1;
-            Func<double, bool> isZero = d => d == 0;
+            static bool isPositive(double d) => d > 0;
+            static bool IsOdd(double d) => d % 2 == 1;
+            static bool isZero(double d) => d == 0;
 
             // Act
             var result = Check.That(num)
@@ -259,13 +259,13 @@ internal class DoubleTests
         {
             // Arrange
             var num = 998d;
-            Func<double, bool> isPositive = d => d > 0;
-            Func<double, bool> isEven = d => d % 2 == 0;
-            Func<double, bool> IsDivisibleByTen = d => d % 10 == 0;
-            Func<double, bool> isLessThanAThousand = d => d < 1000;
+            static bool isPositive(double d) => d > 0;
+            static bool isEven(double d) => d % 2 == 0;
+            static bool IsDivisibleByTen(double d) => d % 10 == 0;
+            static bool isLessThanAThousand(double d) => d < 1000;
 
-            (Func<double, bool> check, ErrorType error)[] checksArray =
-                new [] {
+            var checksArray =
+                new (Func<double, bool> check, ErrorType error) [] {
                 (isPositive, ErrorType.NotPositive),
                 (isEven, ErrorType.NotEven),
                 (IsDivisibleByTen, ErrorType.NotDivisibleBy10),
@@ -284,15 +284,15 @@ internal class DoubleTests
 
     }
 
-    class ValidationSuccess
+    private class ValidationSuccess
     {
         [Test]
         public void WhenGivenADouble_ShouldBeAbleToPassAFunctionToValidateAPropertyOfTheDoubleAsTrue()
         {
             // Arrange
             var num = 1.0d;
-            Func<double, bool> isPositive = (d) => d > 0;
-            Func<double, string> errorGenerator = (d) => $"The value: {d} failed validation.";
+            static bool isPositive(double d) => d > 0;
+            static string errorGenerator(double d) => $"The value: {d} failed validation.";
             // Act
             var result = Check.That(num).Is(isPositive, errorGenerator);
             // Assert
@@ -307,9 +307,9 @@ internal class DoubleTests
         {
             // Arrange
             var num = 100d;
-            Func<double, bool> isPositive = d => d > 0;
-            Func<double, bool> isGreaterThanFifty = d => d > 50;
-            Func<double, string> errorGenerator = (d) => $"{d} did not pass validation";
+            static bool isPositive(double d) => d > 0;
+            static bool isGreaterThanFifty(double d) => d > 50;
+            static string errorGenerator(double d) => $"{d} did not pass validation";
             // Act
             var result = Check.That(num)
                 .Is(isPositive, errorGenerator)
@@ -326,15 +326,15 @@ internal class DoubleTests
         {
             // Arrange
             var num = 100d;
-            Func<double, bool> isPositive = d => d > 0;
-            Func<double, bool> IsDivisibleByTen = d => d % 10 == 0;
-            Func<double, bool> isEven = d => d % 2 == 0;
-            Func<double, bool> isLessThanAThousand = d => d < 1000;
+            static bool isPositive(double d) => d > 0;
+            static bool IsDivisibleByTen(double d) => d % 10 == 0;
+            static bool isEven(double d) => d % 2 == 0;
+            static bool isLessThanAThousand(double d) => d < 1000;
 
-            Func<double, string> errorGenerator = d => $"{d} failed validation";
+            string errorGenerator(double d) => $"{d} failed validation";
 
-            (Func<double, bool> check, Func<double, string> errorGenerator)[] checksArray =
-                new[] {
+            var checksArray =
+                new (Func<double, bool> check, Func<double, string> errorGenerator)[] {
                 (isPositive, errorGenerator),
                 (IsDivisibleByTen, errorGenerator),
                 (isEven, errorGenerator),
@@ -352,6 +352,4 @@ internal class DoubleTests
         }
 
     }
-
-
 }
