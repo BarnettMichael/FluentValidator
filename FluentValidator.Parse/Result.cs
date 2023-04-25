@@ -11,9 +11,9 @@ public record Result<TEntity>
         IsParsedSuccessfully = isParsedSuccessfully;
     }
 
-    private Result(bool isParsedSuccesffully)
+    private Result(bool isParsedSuccesfully)
     {
-        IsParsedSuccessfully = isParsedSuccesffully;
+        IsParsedSuccessfully = isParsedSuccesfully;
     }
 
     public static Result<TEntity> Success(TEntity value) => new Result<TEntity>(value, true);

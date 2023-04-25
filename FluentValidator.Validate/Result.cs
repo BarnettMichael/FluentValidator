@@ -15,7 +15,7 @@ public record Result<TEntity>(TEntity Value, bool IsSuccess, string Error = "")
 }
 public record Result<TEntity, TError>(TEntity Value, bool IsSuccess, TError? Error)
 {
-    public static implicit operator bool(Result<TEntity, TError> r) => r.IsSuccess;
+    //public static implicit operator bool(Result<TEntity, TError> r) => r.IsSuccess;
 
-    public static implicit operator Result<TEntity>(Result<TEntity, TError> r) => new(r.Value, r.IsSuccess, r.Error?.ToString() ?? string.Empty);
+    //public static implicit operator Result<TEntity>(Result<TEntity, TError> r) => new(r.Value, r.IsSuccess, r.Error?.ToString() ?? string.Empty);
 }
